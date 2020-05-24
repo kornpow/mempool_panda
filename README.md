@@ -9,6 +9,11 @@ HOST=localhost
 btcctl -s $HOST -u $USERNAME -P $PASSWORD getrawmempool true > mempool.json
 ```
 
+# Install Python Dependancies
+```
+pip3 install pandas
+```
+
 # Get Python shell with sorted dataframes
 ```
 python3 mempool/mempool_panda.py
