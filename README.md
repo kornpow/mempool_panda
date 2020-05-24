@@ -14,5 +14,8 @@ btcctl -s $HOST -u $USERNAME -P $PASSWORD getrawmempool true > mempool.json
 python3 mempool/mempool_panda.py
 ```
 
+# Example
+![example](https://raw.githubusercontent.com/sako0938/mempool_panda/master/panda-example.png)
+
 # TODO
 - [] Use websockets to query data from BTCD directly instead of as a file
