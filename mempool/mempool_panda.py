@@ -1,4 +1,5 @@
 import pandas
+import code
 
 pandas.set_option('display.max_colwidth', None)
 pandas.set_option('display.max_rows', None)
@@ -6,11 +7,11 @@ pandas.options.display.float_format = '{:,.8f}'.format
 
 def calcSatPerByte(row):
 	sats = row.fee * 100000000
-	print(sats)
 	return sats/row.vsize
 
-# btcctl getrawmempool true > test.log
-a = pandas.read_json('test.log')
+# Output mempool in json format to file on command line
+# btcctl getrawmempool true > mempool.json'
+a = pandas.read_json('mempool.json')
 b = a.T
 
 # Lists to filter columns
@@ -20,14 +21,20 @@ d1 = ['sats_byte', 'vsize', 'weight', 'fee', 'height']
 # Calculate sat/byte for each transaction
 b['sats_byte'] = b.apply(lambda x: calcSatPerByte(x), axis=1)
 
+# Use these sorted dataframes to do analysis
 # Sort mempool by weight and by feerate
 weight_sort = b.sort_values(['weight'],ascending=False)[d1]
 fee_sort = b.sort_values(['sats_byte'],ascending=False)[d1]
 
+### END SETUP
+### BEGIN Calculation
+
+# Block Parameters
 # weight unit per block
 wu_block = 4000000
+
 # total mempool size blocks
-c.weight.sum()/wu_block
+weight_sort.weight.sum()/wu_block
 
 # Average fee for the heaviest 3000 txns
 weight_sort.head(3000).sats_byte.sum()/3000
@@ -42,4 +49,6 @@ fee_sort.head(30000).weight.sum()/wu_block
 # Number of blocks for cheapest 20000 txns
 fee_sort.tail(20000).weight.sum()/4000000
 # Average fee rate for cheapest 20000 txns
-fee_sort.tail(20000).sats_byte.sum()/10000
+fee_sort.tail(20000).sats_byte.sum()/20000
+
+code.interact(local=locals())
