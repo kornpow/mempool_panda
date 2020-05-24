@@ -15,6 +15,7 @@ python3 mempool/mempool_panda.py
 ```
 
 # Example
+Get the 10 heaviest transactions and the 10 most expensive transactions, and get their total weights
 ![example](https://raw.githubusercontent.com/sako0938/mempool_panda/master/panda-example.png)
 
 # TODO
