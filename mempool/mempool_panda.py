@@ -10,8 +10,10 @@ def calcSatPerByte(row):
 	return sats/row.vsize
 
 # Output mempool in json format to file on command line
-# btcctl getrawmempool true > mempool.json'
-a = pandas.read_json('mempool.json')
+# btcctl getrawmempool true > mempool.json
+# bitcoin-cli getrawmempool true > test2.json
+# a = pandas.read_json('mempool.json')
+a = pandas.read_json('../mempool_dumps/test2.json')
 b = a.T
 
 # Lists to filter columns
@@ -50,5 +52,15 @@ fee_sort.head(30000).weight.sum()/wu_block
 fee_sort.tail(20000).weight.sum()/4000000
 # Average fee rate for cheapest 20000 txns
 fee_sort.tail(20000).sats_byte.sum()/20000
+
+# First Full Block
+fbi = pandas.Index(fee_sort.weight.cumsum()).get_loc(4000000, 'bfill', tolerance=100000)
+# Second Full Block
+sbi = pandas.Index(fee_sort.weight.cumsum()).get_loc(8000000, 'bfill', tolerance=100000)
+
+# Fees in first block
+print(f"First block fees: {fee_sort[0:fbi].fee.sum()}")
+# Fees in second block
+print(f"First block fees: {fee_sort[fbi:sbi].fee.sum()}")
 
 code.interact(local=locals())
